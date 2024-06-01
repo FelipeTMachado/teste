@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Documentação do Sistema de Análise Léxica</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                color: #333;
+            }
+            .container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h1, h2 {
+                color: #007BFF;
+            }
+            p, ul, ol {
+                line-height: 1.6;
+            }
+            .section {
+                margin-bottom: 30px;
+            }
+            .code-example {
+                background-color: #f4f4f4;
+                padding: 10px;
+                border-left: 4px solid #007BFF;
+                overflow-x: auto;
+            }
+            .code-example pre {
+                margin: 0;
+            }
+            .toc {
+                margin-bottom: 40px;
+            }
+            .toc a {
+                color: #007BFF;
+                text-decoration: none;
+            }
+            .toc a:hover {
+                text-decoration: underline;
+            }
+            .btn-float {
+                position: fixed;
+                background-color: #007BFF;
+                color: #fff;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                text-align: center;
+                line-height: 50px;
+                cursor: pointer;
+                font-size: 24px;
+            }
+            .btn-float-left {
+                left: 20px;
+                bottom: 20px;
+            }
+            .btn-float-right {
+                right: 20px;
+                bottom: 20px;
+            }
+            .btn-float-top {
+                right: 20px;
+                bottom: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Documentação do Sistema de Análise Léxica</h1>
+
+            <div class="toc">
+                <h2>Sumário</h2>
+                <ul>
+                    <li><a href="#visao-geral">Visão Geral</a></li>
+                    <li><a href="#funcionalidades">Funcionalidades</a></li>
+                    <li><a href="#descricao-campos">Descrição dos Campos</a></li>
+                    <li><a href="#como-usar">Como Usar o Sistema</a></li>
+                    <li><a href="#exemplo-expressao">Exemplos de Expressões Regulares</a></li>
+                    <li><a href="#exemplo-expressaocodigo">Exemplos de códigos testes e suas respectivas expressões</a></li>
+                    <li><a href="#notas-adicionais">Notas Adicionais</a></li>
+                </ul>
+            </div>
+
+            <div id="visao-geral" class="section">
+                <h2>Visão Geral</h2>
+                <p>Este sistema permite a inserção de expressões regulares para gerar uma tabela de análise léxica, visualizar o autômato correspondente e ver a análise léxica.</p>
+            </div>
+
+            <div id="funcionalidades" class="section">
+                <h2>Funcionalidades</h2>
+                <ul>
+                    <li>Inserir Expressão Regular</li>
+                    <li>Gerar Tabela de Análise Léxica</li>
+                    <li>Mostrar Autômato</li>
+                    <li>Executar Análise Léxica</li>
+                </ul>
+            </div>
+
+            <div id="descricao-campos" class="section">
+                <h2>Descrição dos Campos</h2>
+                <ul>
+                    <li><strong>Expressão Regular:</strong> Campo para inserir a expressão regular que será utilizada na análise léxica.</li>
+                    <li><strong>Gerar Tabela de Análise Léxica:</strong> Botão que gera a tabela de análise léxica a partir da expressão regular fornecida, essa tabela contém as transições de estados do automato coloridas para identificar como é realizado a análise léxica.</li>
+                    <li><strong>Mostrar Autômato:</strong> Botão que exibe o autômato gerado pela expressão regular com base na tabela de análise léxica.</li>
+                    <li><strong>Executar Análise Léxica:</strong> Botão que executa a análise léxica com base na expressão regular inserida.</li>
+                </ul>
+            </div>
+
+            <div id="como-usar" class="section">
+                <h2>Como Usar o Sistema</h2>
+                <ol>
+                    <li>No campo "Insira sua Expressão Regular", digite a expressão regular desejada.</li>
+                    <li>Lembre-se sempre de usar as instruções de uso!</li>
+                    <li>Clique no botão "Gerar Tabela de Análise Léxica" para gerar a tabela correspondente.</li>
+                    <li>Clique no botão "Mostrar Autômato" para visualizar o autômato gerado pela expressão regular.</li>
+                    <li>Clique no botão "Executar Análise Léxica" para ver a análise léxica funcionando com a expressão inserida.</li>
+                </ol>
+            </div>
+
+            <div id="exemplo-expressao" class="section">
+                <h2>Exemplos de Expressões Regulares</h2>
+                <p><b>Exemplo de caractéres válidos (quando quiser que um caractere seja identificado, usar ele dentro de aspas):</b></p>
+                <div class="code-example">
+                    <pre>soma:"+";</pre>
+                    <pre>incremento:"++";</pre>
+                    <pre>maiorigual:">=";</pre>
+                    <pre>ac: "{";</pre>  
+                    <pre>fc: "}";</pre> 
+                    <pre>ap: "(";</pre>  
+                    <pre>fp: ")";</pre>
+                    <pre>dp:"\:";</pre> 
+                    <pre>pv:"\;";</pre>
+                </div>
+                <p><b>Exemplo de palavras reservadas (ou palavras chave, sempre seguindo a ordem chave:chave) :</b></p>
+                <div class="code-example">
+                    <pre>nomeprograma:nomeprograma;</pre>
+                    <pre>if:if;</pre>
+                    <pre>else:else;</pre>
+                    <pre>int:int;</pre>
+                </div>
+                <p><b>Exemplo de expressões simples válidas:</b></p>
+                <p>Qualquer letra única:</p>
+                <div class="code-example">
+                    <pre>letra:[a-z];</pre>
+                </div>
+                <p>Qualquer letra única, minúscula ou maiúscula</p>
+                <div class="code-example">
+                    <pre>letraMinMaius:[a-zA-Z];</pre>
+                </div>
+                <p>Qualquer número único:</p>
+                <div class="code-example">
+                    <pre>numero:[0-9];</pre>
+                </div>
+                <p><b>Exemplo de expressões simples com operadores válidos:</b></p>
+                <p>Qualquer palavra que contenha uma ou mais letras:</p>
+                <div class="code-example">
+                    <pre>letras:[a-z]*;</pre>
+                </div>
+                <p>Qualquer palavra que contenha uma ou mais letras, maiúsculas ou minúsculas:</p>
+                <div class="code-example">
+                    <pre>letras:[a-zA-Z]*;</pre>
+                </div>
+                <p>Qualquer sequência de um ou mais números:</p>
+                <div class="code-example">
+                    <pre>numeros:[0-9]*;</pre>
+                </div>
+                <p>Qualquer letra sem o i:</p>
+                <div class="code-example">
+                    <pre>letra-i:[a-hj-z];</pre>
+                </div>
+                <p>Qualquer palavra que contenha uma ou mais letras, sem as letras i, n, y, z:</p>
+                <div class="code-example">
+                    <pre>letras-inyz:[a-hj-mo-x]*;</pre>
+                </div>
+                <p><b>Exemplos de expressões compostas, sempre agrupando de dois em dois por meio dos colchetes {exp1}{exp2}.</b></p>
+                <p>Um identificador:</p>
+                <div class="code-example">
+                    <pre>letra:[a-z]*; num:[0-9]*; id:{letras}{num};</pre>
+                </div>
+                <p>Uma palavra qualquer com a primeira letra maiúscula e o restante minúsculas: </p>
+                <div class="code-example">
+                    <pre>letraMaiuscula:[A-Z]; letraMin:[a-z]*; palavra:{letraMaiuscula}{letraMin};</pre>
+                </div>
+            </div>
+            
+            <div id="exemplo-expressaocodigo" class="section">
+                <h2>Exemplos de códigos testes e suas respectivas expressões:</h2>
+                <p><b>Exemplo 1:</b></p>
+                <p>Código para teste: </p>
+                <div class="code-example">
+                    <pre>nomeprograma: if (a &lt; b) then { a++ };</pre>
+                </div>
+                <p>Expressões/tokens que identificam todo código: </p>
+                <div class="code-example">
+                    <pre>nomeprograma:nomeprograma;
+if:if;
+then:then;
+dp:"\:";
+ap:"(";
+fp:")";
+ac: "{";
+fc: "}";
+menor:"<";
+incremento:"++";
+pv:"\;";
+variaveis:[ab];</pre>
+                </div>
+                <p><b>Exemplo 2:</b></p>
+                <p>Código para teste: </p>
+                <div class="code-example">
+                    <pre>y = 2x + 360;</pre>
+                </div>
+                <p>Expressões/tokens que identificam todo código: </p>
+                <div class="code-example">
+                    <pre>soma:"+";
+pv:";";
+atribuicao:"=";
+variaveis:[yx];
+num:[0-9]*;</pre>
+                </div>
+            </div>
+
+            <div id="notas-adicionais" class="section">
+                <h2>Notas Adicionais</h2>
+                <p>Certifique-se de seguir as instruções e exemplos fornecidos nesta documentação para garantir o uso correto do sistema.</p>
+                <p>Qualquer dúvida e sugestões de melhoria entrar em contato com o desenvolvedor do sistema:</p>
+                <p><i>Cleverton Hoffmann<br>clevertonhoffmann@gmail.com</i></p>
+            </div>
+        </div>
+
+        <!-- Botões Flutuantes -->
+        <button class="btn-float btn-float-right" onclick="scrollToTop()">&#8593;</button>
+        <script>
+            function scrollToTop() {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        </script>
+    </body>
+</html>

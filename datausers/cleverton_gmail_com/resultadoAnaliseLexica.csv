@@ -1,0 +1,15 @@
+Token;Lexema;Posição
+nomeprograma;nomeprograma;0
+dp;:;1
+if;if;2
+ap;(;3
+variaveis;a;4
+menor;<;5
+variaveis;b;6
+fp;);7
+then;then;8
+ac;{;9
+variaveis;a;10
+incremento;++;11
+fc;};12
+pv;";";13

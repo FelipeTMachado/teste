@@ -1,0 +1,18 @@
+- As expressões regulares devem ser definidas seguindo a ordem:
+nomedaexpressão:expressão; 
+
+- Definir em primeiro caracteres e palavras reservadas:
+Ex. caracteres: soma:"+"; ap:"("; 
+Ex. palavras reservadas: else:else; if:if;
+
+- Definir em segundo as expressões simples:
+Ex: letras:[a-z]; num:[0-9]; aOUb:a|b;
+
+- Definir por ultimo as expressões compostas usando colchetes:
+Ex: id:{letras}{num}; adicao:{soma}{num};
+
+- Atenção com caracteres especiais definir entre aspas:
+obs: Alguns específicos como : com quebra "\:"
+Ex. Caracteres: "{", "}", "\:", "\;"
+
+- Antes de clicar botão Desenhar Autômato ou Executar Analise Léxica, primeiro precisa-se clicar em Tabela de Analise Lexica;

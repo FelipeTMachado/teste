@@ -1,0 +1,40 @@
+/* Estilo base do toast */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Estilo para o toast com classe 'show-toast' */
+.toast.show-toast {
+    opacity: 1;
+}
+
+/* Estilo para o toast com classe 'erro' */
+.toast-error {
+    background-color: #ff6347;  /* Cor de fundo vermelha */
+}
+
+/* Estilo para o toast com classe 'info' */
+.toast-info {
+    background-color: #3498db;  /* Cor de fundo azul */
+}
+
+/* Estilo para o toast com classe 'warning' */
+.toast-warning {
+    background-color: #ffc107; /* Cor de fundo amarela */
+}
+
+/* Estilo para o toast com classe 'sucesso' */
+.toast-success {
+    background-color: #32cd32; /* Cor de fundo verde */
+}
+
+

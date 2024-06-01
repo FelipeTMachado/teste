@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automato GALS</title>
+  <style>
+    /* Adicione estilos CSS conforme necessário para os estados, transições, etc. */
+    .state {
+      width: 40px;
+      height: 40px;
+      border: 2px solid black;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Adicione os estados como divs com a classe "state" -->
+  <div class="state" id="q0">q0</div>
+  <div class="state" id="q1">q1</div>
+  <div class="state" id="q2">q2</div>
+
+  <!-- Adicione a tabela de transição em JavaScript -->
+  <script>
+    // Exemplo de tabela de transição
+    const tabelaTransicao = {
+      q0: { 0: 'q1', 1: 'q2' },
+      q1: { 0: 'q2', 1: 'q0' },
+      q2: { 0: 'q0', 1: 'q1' }
+    };
+
+    // Função para aplicar transição quando um botão é clicado
+    function transicao(estadoAtual, entrada) {
+      const proximoEstado = tabelaTransicao[estadoAtual][entrada];
+      if (proximoEstado) {
+        alert(`Transição de ${estadoAtual} com entrada ${entrada} para ${proximoEstado}`);
+        // Aqui você pode adicionar lógica para atualizar a representação gráfica
+      } else {
+        alert(`Não há transição definida para ${estadoAtual} com entrada ${entrada}`);
+      }
+    }
+
+    // Exemplo de uso: clicar no estado q0 com entrada 0
+    document.getElementById('q0').addEventListener('click', () => transicao('q0', 0));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+inc:++;
+maiorig:>=;
+num:[0-9];
+letras:[a-zA-Z];
+espaco:\n;
+e:&&;
+dif:<>;
+id:{letras}({letras}|{num}| _ )*;
+
+inc:++;
+maiorig:>=;
+num:[0-9];
+letras:[a-zA-Z];
+espaco:\n;
+e:&&;
+dif:<>;
+if:if;

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+                    <html lang="pt-BR">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Desenhar e Conectar Círculos</title>
+                            <style>
+                                #canvas { border: 1px solid #000; cursor: pointer; }
+                            </style>
+                        </head>
+                        <body style="text-align:center">
+                            <canvas id="canvas" width="700" height="700"></canvas>
+                            <script>
+                             var canvas = document.getElementById("canvas");
+                                var ctx = canvas.getContext("2d");
+                                var circles = [];
+                                var numRows = 2; // Número de linhas
+                                var numColumns = 2; // Número de colunas
+                                var circleRadius = 20; // Raio do círculo
+                                var circleSpacingX = 120; // Espaçamento horizontal entre os círculos
+                                var circleSpacingY = canvas.height / (numRows + 1); // Espaçamento vertical entre os círculos
+                                 function isMouseOverCircle(mouseX, mouseY, circle) {
+                                    var dx = mouseX - circle.x;
+                                    var dy = mouseY - circle.y;
+                                    return dx * dx + dy * dy < circle.radius * circle.radius;
+                                }
+                                 canvas.addEventListener("mousedown", function(event) {
+                                    var mouseX = event.clientX - canvas.getBoundingClientRect().left;
+                                    var mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+                                    circles.forEach(function(circle) {
+                                        if (isMouseOverCircle(mouseX, mouseY, circle)) {
+                                            circle.isDragging = true;
+                                        }
+                                    });
+                                });
+                         
+                                // Evento de movimento do mouse
+                                canvas.addEventListener("mousemove", function(event) {
+                                    circles.forEach(function(circle) {
+                                        if (circle.isDragging) {
+                                            circle.x = event.clientX - canvas.getBoundingClientRect().left;
+                                            circle.y = event.clientY - canvas.getBoundingClientRect().top;
+                                            redraw();
+                                        }
+                                    });
+                                });
+
+                                // Evento de soltar o botão do mouse
+                                canvas.addEventListener("mouseup", function() {
+                                    circles.forEach(function(circle) {
+                                        circle.isDragging = false;
+                                    });
+                                });
+                                 function drawCircle(circle) {
+                                    ctx.beginPath();
+                                    ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
+                                    ctx.fillStyle = "rgba(0, 149, 221, 0.5)";
+                                    ctx.fill();
+                                    ctx.strokeStyle = "#0095DD";
+                                    ctx.lineWidth = 2;
+                                    ctx.stroke();
+                                    ctx.closePath();
+
+                                    ctx.fillStyle = "#000";
+                                    ctx.font = "12px Arial";
+                                    ctx.textAlign = "center";
+                                    ctx.textBaseline = "middle";
+                                    ctx.fillText(circle.label, circle.x, circle.y);
+
+                                    // Desenha a flecha apontando para o estado inicial q0
+                                        if (circle.label === "q0") {
+                                            ctx.beginPath();
+                                            ctx.moveTo(circle.x - circle.radius, circle.y);
+                                            ctx.lineTo(circle.x - circle.radius - 20, circle.y - 10);
+                                            ctx.lineTo(circle.x - circle.radius - 20, circle.y + 10);
+                                            ctx.closePath();
+                                            ctx.fillStyle = "rgba(200, 200, 200, 0.5)"; // Cinza claro para o preenchimento
+                                            ctx.fill();
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a borda
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                        }
+                                                       
+                                        if (circle.label === "q0") {
+                                            // Desenha a linha conectando as bordas dos círculos
+                                            ctx.beginPath();
+                                            ctx.moveTo(circle.x + circle.radius * Math.cos(Math.atan2(circles[1].y - circle.y, circles[1].x - circle.x)), circle.y + circle.radius * Math.sin(Math.atan2(circles[1].y - circle.y, circles[1].x - circle.x)));
+                                            ctx.lineTo(circles[1].x - circles[1].radius * Math.cos(Math.atan2(circles[1].y - circle.y, circles[1].x - circle.x)), circles[1].y - circles[1].radius * Math.sin(Math.atan2(circles[1].y - circle.y, circles[1].x - circle.x)));
+
+                                            // Adiciona a seta na ponta da linha
+                                            var arrowSize = 10; // Tamanho da seta
+                                            var angle = Math.atan2(circles[1].y - circle.y, circles[1].x - circle.x);
+                                            var circles1EdgeX = circles[1].x - circles[1].radius * Math.cos(angle);
+                                            var circles1EdgeY = circles[1].y - circles[1].radius * Math.sin(angle);
+                                            ctx.moveTo(circles1EdgeX, circles1EdgeY);
+                                            ctx.lineTo(circles1EdgeX - arrowSize * Math.cos(angle - Math.PI / 6), circles1EdgeY - arrowSize * Math.sin(angle - Math.PI / 6));
+                                            ctx.moveTo(circles1EdgeX, circles1EdgeY);
+                                            ctx.lineTo(circles1EdgeX - arrowSize * Math.cos(angle + Math.PI / 6), circles1EdgeY - arrowSize * Math.sin(angle + Math.PI / 6));
+
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a linha de conexão
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                            
+                                            // Adiciona o rótulo à linha entre circle1 e circle2
+                                            ctx.beginPath();
+                                            var labelX1 = (circle.x + circles[1].x) / 2;
+                                            var labelY1 = (circle.y + circles[1].y) / 2;
+                                            ctx.fillStyle = "#000";
+                                            ctx.font = "12px Arial";
+                                            ctx.textAlign = "center";
+                                            ctx.textBaseline = "middle";
+                                            ctx.fillText("a", labelX1, labelY1-10);
+                                            ctx.closePath();
+                                        }
+
+                                                        
+                                        if (circle.label === "q0") {
+                                            // Desenha a linha conectando as bordas dos círculos
+                                            ctx.beginPath();
+                                            ctx.moveTo(circle.x + circle.radius * Math.cos(Math.atan2(circles[2].y - circle.y, circles[2].x - circle.x)), circle.y + circle.radius * Math.sin(Math.atan2(circles[2].y - circle.y, circles[2].x - circle.x)));
+                                            ctx.lineTo(circles[2].x - circles[2].radius * Math.cos(Math.atan2(circles[2].y - circle.y, circles[2].x - circle.x)), circles[2].y - circles[2].radius * Math.sin(Math.atan2(circles[2].y - circle.y, circles[2].x - circle.x)));
+
+                                            // Adiciona a seta na ponta da linha
+                                            var arrowSize = 10; // Tamanho da seta
+                                            var angle = Math.atan2(circles[2].y - circle.y, circles[2].x - circle.x);
+                                            var circles2EdgeX = circles[2].x - circles[2].radius * Math.cos(angle);
+                                            var circles2EdgeY = circles[2].y - circles[2].radius * Math.sin(angle);
+                                            ctx.moveTo(circles2EdgeX, circles2EdgeY);
+                                            ctx.lineTo(circles2EdgeX - arrowSize * Math.cos(angle - Math.PI / 6), circles2EdgeY - arrowSize * Math.sin(angle - Math.PI / 6));
+                                            ctx.moveTo(circles2EdgeX, circles2EdgeY);
+                                            ctx.lineTo(circles2EdgeX - arrowSize * Math.cos(angle + Math.PI / 6), circles2EdgeY - arrowSize * Math.sin(angle + Math.PI / 6));
+
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a linha de conexão
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                            
+                                            // Adiciona o rótulo à linha entre circle1 e circle2
+                                            ctx.beginPath();
+                                            var labelX2 = (circle.x + circles[2].x) / 2;
+                                            var labelY2 = (circle.y + circles[2].y) / 2;
+                                            ctx.fillStyle = "#000";
+                                            ctx.font = "12px Arial";
+                                            ctx.textAlign = "center";
+                                            ctx.textBaseline = "middle";
+                                            ctx.fillText("[a-z]*", labelX2, labelY2-10);
+                                            ctx.closePath();
+                                        }
+
+                             if (circle.label === "q0") {
+                                                    ctx.fillStyle = "#000";
+                                                    ctx.font = "12px Arial";
+                                                    ctx.textAlign = "center";
+                                                    ctx.textBaseline = "middle";
+                                                    ctx.fillText("?", circle.x, circle.y - circle.radius + 50);
+                                                    
+                                        }                                
+                                        // Desenha a borda dupla para o círculo dos estados finais
+                                        if (circle.label === "q1") {
+                                            ctx.beginPath();
+                                            ctx.arc(circle.x, circle.y, circle.radius - 4, 0, 2 * Math.PI); // Aumenta o raio para a borda dupla
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a cor da primeira borda
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                        }
+
+                                                        
+                                        if (circle.label === "q1") {
+                                            // Desenha a linha conectando as bordas dos círculos
+                                            ctx.beginPath();
+                                            ctx.moveTo(circle.x + circle.radius * Math.cos(Math.atan2(circles[3].y - circle.y, circles[3].x - circle.x)), circle.y + circle.radius * Math.sin(Math.atan2(circles[3].y - circle.y, circles[3].x - circle.x)));
+                                            ctx.lineTo(circles[3].x - circles[3].radius * Math.cos(Math.atan2(circles[3].y - circle.y, circles[3].x - circle.x)), circles[3].y - circles[3].radius * Math.sin(Math.atan2(circles[3].y - circle.y, circles[3].x - circle.x)));
+
+                                            // Adiciona a seta na ponta da linha
+                                            var arrowSize = 10; // Tamanho da seta
+                                            var angle = Math.atan2(circles[3].y - circle.y, circles[3].x - circle.x);
+                                            var circles3EdgeX = circles[3].x - circles[3].radius * Math.cos(angle);
+                                            var circles3EdgeY = circles[3].y - circles[3].radius * Math.sin(angle);
+                                            ctx.moveTo(circles3EdgeX, circles3EdgeY);
+                                            ctx.lineTo(circles3EdgeX - arrowSize * Math.cos(angle - Math.PI / 6), circles3EdgeY - arrowSize * Math.sin(angle - Math.PI / 6));
+                                            ctx.moveTo(circles3EdgeX, circles3EdgeY);
+                                            ctx.lineTo(circles3EdgeX - arrowSize * Math.cos(angle + Math.PI / 6), circles3EdgeY - arrowSize * Math.sin(angle + Math.PI / 6));
+
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a linha de conexão
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                            
+                                            // Adiciona o rótulo à linha entre circle1 e circle2
+                                            ctx.beginPath();
+                                            var labelX3 = (circle.x + circles[3].x) / 2;
+                                            var labelY3 = (circle.y + circles[3].y) / 2;
+                                            ctx.fillStyle = "#000";
+                                            ctx.font = "12px Arial";
+                                            ctx.textAlign = "center";
+                                            ctx.textBaseline = "middle";
+                                            ctx.fillText("[a-z]*", labelX3, labelY3-10);
+                                            ctx.closePath();
+                                        }
+
+                             if (circle.label === "q1") {
+                                                    ctx.fillStyle = "#000";
+                                                    ctx.font = "12px Arial";
+                                                    ctx.textAlign = "center";
+                                                    ctx.textBaseline = "middle";
+                                                    ctx.fillText("exp1", circle.x, circle.y - circle.radius + 50);
+                                                    
+                                        }                                
+                                        // Desenha a borda dupla para o círculo dos estados finais
+                                        if (circle.label === "q2") {
+                                            ctx.beginPath();
+                                            ctx.arc(circle.x, circle.y, circle.radius - 4, 0, 2 * Math.PI); // Aumenta o raio para a borda dupla
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a cor da primeira borda
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                        }
+
+                                                        
+                                       
+                                        if (circle.label === "q2") {
+                                            // Desenha a linha conectando circle e circle (criando uma pétala) quando estado que possui transição para ele mesmo
+                                            ctx.beginPath();
+                                            ctx.moveTo(circle.x, circle.y - circle.radius);
+                                            ctx.bezierCurveTo(circle.x - 50, circle.y - 70, circle.x + 50, circle.y - 70, circle.x, circle.y - circle.radius);
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a linha de conexão
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+
+                                            // Adiciona o rótulo à linha entre circle e ele mesmo
+                                            var labelXcurva2 = circle.x;
+                                            var labelYcurva2 = circle.y - 65;
+                                            ctx.fillStyle = "#000";
+                                            ctx.font = "12px Arial";
+                                            ctx.textAlign = "center";
+                                            ctx.textBaseline = "middle";
+                                            ctx.fillText("[a-z]*", labelXcurva2, labelYcurva2);
+                                            ctx.closePath();
+                                            
+                                            // Adiciona a seta na ponta da curva de Bézier
+                                            var arrowSize = 10; // Tamanho da seta
+                                            var endX = circle.x; // Ponto final da curva (mesmo ponto inicial, pois é uma auto-transição)
+                                            var endY = circle.y - circle.radius;
+                                            var angle = Math.PI / 1.35; // Ângulo da seta 
+
+                                            // Desenha a seta na ponta da pétala
+                                            ctx.beginPath();
+                                            ctx.moveTo(endX, endY);
+                                            ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6), endY - arrowSize * Math.sin(angle - Math.PI / 6));
+                                            ctx.moveTo(endX, endY);
+                                            ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI / 6), endY - arrowSize * Math.sin(angle + Math.PI / 6));
+
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a linha de conexão
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                        }
+
+                             if (circle.label === "q2") {
+                                                    ctx.fillStyle = "#000";
+                                                    ctx.font = "12px Arial";
+                                                    ctx.textAlign = "center";
+                                                    ctx.textBaseline = "middle";
+                                                    ctx.fillText("exp2", circle.x, circle.y - circle.radius + 50);
+                                                    
+                                        }                                
+                                        // Desenha a borda dupla para o círculo dos estados finais
+                                        if (circle.label === "q3") {
+                                            ctx.beginPath();
+                                            ctx.arc(circle.x, circle.y, circle.radius - 4, 0, 2 * Math.PI); // Aumenta o raio para a borda dupla
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a cor da primeira borda
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                        }
+
+                                                        
+                                       
+                                        if (circle.label === "q3") {
+                                            // Desenha a linha conectando circle e circle (criando uma pétala) quando estado que possui transição para ele mesmo
+                                            ctx.beginPath();
+                                            ctx.moveTo(circle.x, circle.y - circle.radius);
+                                            ctx.bezierCurveTo(circle.x - 50, circle.y - 70, circle.x + 50, circle.y - 70, circle.x, circle.y - circle.radius);
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a linha de conexão
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+
+                                            // Adiciona o rótulo à linha entre circle e ele mesmo
+                                            var labelXcurva3 = circle.x;
+                                            var labelYcurva3 = circle.y - 65;
+                                            ctx.fillStyle = "#000";
+                                            ctx.font = "12px Arial";
+                                            ctx.textAlign = "center";
+                                            ctx.textBaseline = "middle";
+                                            ctx.fillText("[a-z]*", labelXcurva3, labelYcurva3);
+                                            ctx.closePath();
+                                            
+                                            // Adiciona a seta na ponta da curva de Bézier
+                                            var arrowSize = 10; // Tamanho da seta
+                                            var endX = circle.x; // Ponto final da curva (mesmo ponto inicial, pois é uma auto-transição)
+                                            var endY = circle.y - circle.radius;
+                                            var angle = Math.PI / 1.35; // Ângulo da seta 
+
+                                            // Desenha a seta na ponta da pétala
+                                            ctx.beginPath();
+                                            ctx.moveTo(endX, endY);
+                                            ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6), endY - arrowSize * Math.sin(angle - Math.PI / 6));
+                                            ctx.moveTo(endX, endY);
+                                            ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI / 6), endY - arrowSize * Math.sin(angle + Math.PI / 6));
+
+                                            ctx.strokeStyle = "#0095DD"; // Azul para a linha de conexão
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                            ctx.closePath();
+                                        }
+
+                             if (circle.label === "q3") {
+                                                    ctx.fillStyle = "#000";
+                                                    ctx.font = "12px Arial";
+                                                    ctx.textAlign = "center";
+                                                    ctx.textBaseline = "middle";
+                                                    ctx.fillText("expcompleta", circle.x, circle.y - circle.radius + 50);
+                                                    
+                                        }                        }
+                                 function redraw() {
+                                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                    circles.forEach(function(circle) {
+                                        drawCircle(circle);
+                                    });
+                                }
+                                 circles.push({ x: circleSpacingX, y: canvas.height / 2, radius: circleRadius, label: "q0" });
+                             var x = circleSpacingX * (0 + 2); // Começa da segunda coluna
+                                    var y = circleSpacingY * (0 + 1);
+                                    circles.push({ x: x, y: y, radius: circleRadius, label: "q" + 1 });
+                         var x = circleSpacingX * (0 + 2); // Começa da segunda coluna
+                                    var y = circleSpacingY * (1 + 1);
+                                    circles.push({ x: x, y: y, radius: circleRadius, label: "q" + 2 });
+                         var x = circleSpacingX * (1 + 2); // Começa da segunda coluna
+                                    var y = circleSpacingY * (0.5 + 1);
+                                    circles.push({ x: x, y: y, radius: circleRadius, label: "q" + 3 });
+                             redraw();
+                            </script>
+                        </body>
+                    </html>

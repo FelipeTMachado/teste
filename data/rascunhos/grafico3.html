@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autômatos com D3</title>
+    <style>
+        .node circle {
+            fill: white;
+            stroke: black;
+            stroke-width: 2px;
+        }
+
+        .node text {
+            font: 12px sans-serif;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        line {
+            stroke: black;
+            stroke-width: 2px;
+        }
+
+        .active circle {
+            fill: orange;
+        }
+    </style>
+</head>
+<body>
+
+<!-- SVG para os autômatos -->
+<svg width="800" height="400" id="automatos">
+    <!-- Elementos dos autômatos serão renderizados aqui -->
+</svg>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+    // Dados do primeiro autômato
+    const states1 = ['q0', 'q1', 'q2'];
+    const finalStates1 = ['q2'];
+    const transitions1 = [
+        { from: 'q0', to: 'q1', label: 'a' },
+        { from: 'q1', to: 'q2', label: 'b' },
+        { from: 'q2', to: 'q0', label: 'c' },
+    ];
+
+    // Dados do segundo autômato
+    const states2 = ['s0', 's1', 's2'];
+    const finalStates2 = ['s2'];
+    const transitions2 = [
+        { from: 's0', to: 's1', label: 'x' },
+        { from: 's1', to: 's2', label: 'y' },
+        { from: 's2', to: 's0', label: 'z' },
+    ];
+
+    // Configuração do SVG
+    const svg = d3.select('#automatos');
+
+    // Adiciona grupos para representar os estados do primeiro autômato
+    const node1 = svg.selectAll('.node1')
+        .data(states1)
+        .enter().append('g')
+        .attr('class', 'node1')
+        .attr('transform', d => `translate(${100 + states1.indexOf(d) * 150}, 100)`)
+        .call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended));
+
+    // Adiciona círculos aos grupos
+    node1.append('circle')
+        .attr('r', 20)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2)
+        .attr('fill', d => finalStates1.includes(d) ? 'green' : 'white');
+
+    // Adiciona rótulos aos grupos
+    node1.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'middle')
+        .text(d => d);
+
+    // Adiciona grupos para representar os estados do segundo autômato
+    const node2 = svg.selectAll('.node2')
+        .data(states2)
+        .enter().append('g')
+        .attr('class', 'node2')
+        .attr('transform', d => `translate(${100 + states2.indexOf(d) * 150}, 300)`)
+        .call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended));
+
+    // Adiciona círculos aos grupos
+    node2.append('circle')
+        .attr('r', 20)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2)
+        .attr('fill', d => finalStates2.includes(d) ? 'green' : 'white');
+
+    // Adiciona rótulos aos grupos
+    node2.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'middle')
+        .text(d => d);
+
+    // Adiciona as linhas para representar as transições do primeiro autômato
+    const lines1 = svg.selectAll('.line1')
+        .data(transitions1)
+        .enter().append('line')
+        .attr('class', 'line1')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2);
+
+    // Adiciona as linhas para representar as transições do segundo autômato
+    const lines2 = svg.selectAll('.line2')
+        .data(transitions2)
+        .enter().append('line')
+        .attr('class', 'line2')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2);
+
+    // Adiciona rótulos às transições do primeiro autômato
+    const transitionLabels1 = svg.selectAll('.label1')
+        .data(transitions1)
+        .enter().append('text')
+        .attr('class', 'label1')
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'middle')
+        .text(d => d.label);
+
+    // Adiciona rótulos às transições do segundo autômato
+    const transitionLabels2 = svg.selectAll('.label2')
+        .data(transitions2)
+        .enter().append('text')
+        .attr('class', 'label2')
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'middle')
+        .text(d => d.label);
+
+    // Função de arrasto
+    function dragstarted(event, d) {
+        d3.select(this).raise().classed('active', true);
+    }
+
+    function dragged(event, d) {
+        d3.select(this).attr('transform', `translate(${event.x - 100},${event.y - (d.startsWith('q') ? 100 : 300)})`);
+        const lines = d.startsWith('q') ? lines1 : lines2;
+        const labelOffset = d.startsWith('q') ? 0 : 300;
+        const transitionLabels = d.startsWith('q') ? transitionLabels1 : transitionLabels2;
+
+        lines.filter(link => link.from === d || link.to === d)
+            .attr('x1', 100 + (d.startsWith('q') ? states1.indexOf(d) * 150 : states2.indexOf(d) * 150))
+            .attr('y1', d.startsWith('q') ? 100 : 300)
+            .attr('x2', event.x)
+            .attr('y2', event.y - labelOffset);
+
+        transitionLabels.filter(label => label.from === d || label.to === d)
+            .attr('x', (100 + (d.startsWith('q') ? states1.indexOf(d) * 150 : states2.indexOf(d) * 150) + event.x) / 2)
+            .attr('y', (d.startsWith('q') ? 100 : 300) + (event.y - labelOffset) / 2);
+    }
+
+    function dragended(event, d) {
+        d3.select(this).classed('active', false);
+    }
+</script>
+
+</body>
+</html>

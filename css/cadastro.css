@@ -1,0 +1,126 @@
+/* cadastro.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    background-image: url('../img/imagemlogin.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #E0FFFF;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 50px;
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+}
+
+.cadastro-form h1,
+.login-form h1 {
+    margin-bottom: 50px;
+    color: #333;
+}
+
+.input-container {
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input[type="password"].error,
+input[type="email"].error {
+    border-color: red;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 2px; 
+    top: 70%;
+    transform: translateY(-50%); 
+    cursor: pointer;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 10px 0;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.olho {
+    width: 20px;
+    height: auto;
+}
+
+form.cadastro-form button[type="submit"],
+form.login-form button[type="submit"] {
+    padding: 10px 40px;
+    margin-bottom: 20px;
+}
+
+#btnVoltar {
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#btnVoltar:hover {
+    background-color: #d0d0d0;
+}
+
+.toast {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+#toast-container {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+}
